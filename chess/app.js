@@ -15,6 +15,7 @@ class ChessPiece {
             for (let k=1; k <= 7; k++) {
                 try {
                     if (document.querySelector(`#${String.fromCharCode(96 + this.x1 + (k*p_gridx[j]))}${this.y1 + (k*p_gridy[j])}`).childElementCount !== 0) {
+                        this.path.push(`${String.fromCharCode(96 + this.x1 + (k*p_gridx[j]))}${this.y1 + (k*p_gridy[j])}`);
                         break;
                     }
                     else {
@@ -35,6 +36,9 @@ class Pawn extends ChessPiece {
             if (y2 - this.y1 === -2 && this.y1 === 7) {
                 return (x2 === this.x1 && y2 - this.y1 === -2);
             }
+            else if (Math.abs(x2 - this.x1) === 1) {
+                return (y2 - this.y1 === -1);
+            }
             else {
                 return (x2 === this.x1 && y2 - this.y1 === -1);
             }
@@ -42,6 +46,9 @@ class Pawn extends ChessPiece {
         else if (this.color === "white") {
             if (y2 - this.y1 === 2 && this.y1 === 2) {
                 return (x2 === this.x1 && y2 - this.y1 === 2);
+            }
+            else if (Math.abs(x2 - this.x1) === 1) {
+                return (y2 - this.y1 === 1);
             }
             else {
                 return (x2 === this.x1 && y2 - this.y1 === 1);
@@ -105,6 +112,7 @@ class Knight extends ChessPiece {
         for (let j=0; j < p_gridx.length; j++) {
             try {
                 if (document.querySelector(`#${String.fromCharCode(96 + this.x1 + p_gridx[j])}${this.y1 + p_gridy[j]}`).childElementCount !== 0) {
+                    this.path.push(`${String.fromCharCode(96 + this.x1 + p_gridx[j])}${this.y1 + p_gridy[j]}`);
                     continue;
                 }
                 else {
@@ -142,7 +150,7 @@ const pieces = Array.from(document.querySelectorAll('.piece'))
 let select = "" //Selected piece. Type Object returned by clickItem
 
 function clickItem(tile) {
-    if (tile.childElementCount > 0) {
+    if (tile.childElementCount > 0 && tile.hasAttribute('style') === false) {
         const piece = tile.firstElementChild;
         piece.classList.toggle('clicked');
         if (select === "") {
@@ -193,23 +201,6 @@ function createClass(piece) {
     }
 }
 
-function dropItem(tile) {
-    if (tile.childElementCount === 0 && select !== "") {
-        clearHighlight();
-        const piece = document.querySelector('div.clicked');
-        if (tile.hasAttribute('style')) {
-            const fromtile = piece.parentElement;
-            tile.append(...fromtile.childNodes);
-            piece.classList.toggle('clicked');
-            select = "";
-        }
-        else {
-            piece.classList.toggle('clicked');
-            select = "";            
-        }
-    }
-}
-
 function highlightMoves() {
     select.checkPath();
     for (let i=0; i<tiles.length; i++) {
@@ -217,13 +208,68 @@ function highlightMoves() {
         const x2 = xy[0].charCodeAt(0) - 96;
         const y2 = parseInt(xy[1]);
         if (select.move(x2, y2) === true && select.path.includes(tiles[i].id)) {
-            tiles[i].style.border = "4px solid yellow";
+            try {
+                if (select.color === tiles[i].firstElementChild.classList[1].split('-')[0]) {
+                    continue;
+                }
+                else if (select.color !== tiles[i].firstElementChild.classList[1].split('-')[0]) {
+                    tiles[i].style.border = "4px solid red";
+                    movePawn(tiles[i], x2);
+                }
+                else {
+                    tiles[i].style.border = "4px solid yellow";
+                }
+            }
+            catch (err) {
+                tiles[i].style.border = "4px solid yellow";
+                movePawn(tiles[i], x2);
+            }
+        }
+    }
+}
+
+function movePawn(tile, x2) {
+    if (select.name === "pawn") {
+        if (tile.childElementCount > 0 && x2 === select.x1) {
+            tile.getAttribute('style');
+            tile.removeAttribute('style');
+        }
+        else if (tile.childElementCount === 0 && Math.abs(x2 - select.x1) === 1) {
+            tile.getAttribute('style');
+            tile.removeAttribute('style');
         }
     }
 }
 
 function clearHighlight() {
-    tiles.forEach(item => item.removeAttribute('style'));
+    tiles.forEach(item => {
+        item.getAttribute('style');         //Added due to a bug where removeAttribute fails to run on some divs in time; seems to
+        item.removeAttribute('style');      //fix freezing bug as well
+    });
+}
+
+function dropItem(tile) {
+    const piece = document.querySelector('div.clicked');
+    if (tile.hasAttribute('style') && select !== "") {
+        clearHighlight();
+        const fromtile = piece.parentElement;
+        if (tile.childElementCount === 0) {
+            tile.append(...fromtile.childNodes);
+            piece.classList.toggle('clicked');
+            select = "";
+        }
+        else {
+            tile.innerHTML = "";
+            tile.append(...fromtile.childNodes);
+            piece.classList.toggle('clicked');
+            select = "";
+        }
+    }
+    else if (tile.childElementCount === 0 && select !== "") {
+        clearHighlight();
+        piece.classList.toggle('clicked');
+        select = "";
+    }
 }
 
 tiles.forEach(item => item.addEventListener('click', function() {
