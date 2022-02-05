@@ -136,5 +136,64 @@ body {
 }
 
 .clicked {
-    backdrop-filter: invert(100%);
+    /* background-color: rgb(255, 252, 97); */
+    background-color: rgba(255, 255, 255, 0.288);
+}
+
+.promotion-prompt-container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    place-items: center;
+}
+
+.promotion-prompt-black, .promotion-prompt-white {
+    height: 350px;
+    width: 600px;
+    background-color: #978b7c;
+    border: black solid 4px;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+}
+
+.promotion-prompt-black > h2,
+.promotion-prompt-white > h2 {
+    position: relative;
+    top: 50px;
+}
+
+.piece-select{
+    display: flex;
+    width: 600px;
+    height: 350px;
+}
+
+.piece-select > .black-piece, 
+.piece-select > .white-piece {
+    font-size: 8vh;
+    background-color: rgb(204, 178, 133);
+    border: black solid 4px;
+    border-radius: 7px;
+    width: 93px;
+    height: 93px;
+    display: grid;
+    place-content: center;
+}
+
+.piece-select > .black-piece:hover, 
+.piece-select > .white-piece:hover {
+    background-color: rgb(233, 204, 156);
+    cursor: pointer;
+}
+
+.display-none {
+    display: none;
+}
+
+.visibility-hidden {
+    visibility: hidden;
 }

@@ -213,15 +213,18 @@ function highlightMoves() {
                     continue;
                 }
                 else if (select.color !== tiles[i].firstElementChild.classList[1].split('-')[0]) {
-                    tiles[i].style.border = "4px solid red";
+                    tiles[i].style.border = "4px solid rgba(200, 1, 1)";
+                    tiles[i].style.borderRadius = "4px";
                     movePawn(tiles[i], x2);
                 }
                 else {
-                    tiles[i].style.border = "4px solid yellow";
+                    tiles[i].style.border = "4px solid rgb(255, 252, 97)";
+                    tiles[i].style.borderRadius = "4px";
                 }
             }
             catch (err) {
-                tiles[i].style.border = "4px solid yellow";
+                tiles[i].style.border = "4px solid rgb(255, 252, 97)";
+                tiles[i].style.borderRadius = "4px";
                 movePawn(tiles[i], x2);
             }
         }
@@ -256,12 +259,132 @@ function dropItem(tile) {
         if (tile.childElementCount === 0) {
             tile.append(...fromtile.childNodes);
             piece.classList.toggle('clicked');
+                // if pawn reaches promotion row, promote to selected piece
+                const piecePromotionButton = document.querySelectorAll('[promotion-button]')
+                const xy = tile.id.split('');
+                const y2 = parseInt(xy[1]);
+                if (y2 === 1 && piece.classList.contains('pawn') === true && piece.classList.contains('black-piece') === true) {
+                    showPromotionBlack()
+                    piecePromotionButton.forEach(button => {
+                        button.addEventListener('click', () => {
+                            if (button.classList.contains('rook') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('rook')
+                                piece.textContent = '♜'
+                                hidePromotionBlack()
+                            } else if (button.classList.contains('knight') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('knight')
+                                piece.textContent = '♞'
+                                hidePromotionBlack()
+                            } else if (button.classList.contains('bishop') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('bishop')
+                                piece.textContent = '♝'
+                                hidePromotionBlack()
+                            } else if (button.classList.contains('queen') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('queen')
+                                piece.textContent = '♛'
+                                hidePromotionBlack()
+                            }
+                        })
+                    })
+                } else if (y2 === 8 && piece.classList.contains('pawn') === true && piece.classList.contains('white-piece') === true) {
+                    showPromotionWhite()
+                    piecePromotionButton.forEach(button => {
+                        button.addEventListener('click', () => {
+                            if (button.classList.contains('rook') && piece.classList.contains('pawn')) {
+                                console.log('whitepress')
+                                piece.classList.remove('pawn')
+                                piece.classList.add('rook')
+                                piece.textContent = '♜'
+                                hidePromotionWhite()
+                            } else if (button.classList.contains('knight') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('knight')
+                                piece.textContent = '♞'
+                                hidePromotionWhite()
+                            } else if (button.classList.contains('bishop') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('bishop')
+                                piece.textContent = '♝'
+                                hidePromotionWhite()
+                            } else if (button.classList.contains('queen') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('queen')
+                                piece.textContent = '♛'
+                                hidePromotionWhite()
+                            }
+                        })
+                    })
+                }
             select = "";
         }
         else {
             tile.innerHTML = "";
             tile.append(...fromtile.childNodes);
             piece.classList.toggle('clicked');
+                // if pawn reaches promotion row, promote to selected piece
+                const piecePromotionButton = document.querySelectorAll('[promotion-button]')
+                const xy = tile.id.split('');
+                const y2 = parseInt(xy[1]);
+                if (y2 === 1 && piece.classList.contains('pawn') === true && piece.classList.contains('black-piece') === true) {
+                    showPromotionBlack()
+                    piecePromotionButton.forEach(button => {
+                        button.addEventListener('click', () => {
+                            if (button.classList.contains('rook') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('rook')
+                                piece.textContent = '♜'
+                                hidePromotionBlack()
+                            } else if (button.classList.contains('knight') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('knight')
+                                piece.textContent = '♞'
+                                hidePromotionBlack()
+                            } else if (button.classList.contains('bishop') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('bishop')
+                                piece.textContent = '♝'
+                                hidePromotionBlack()
+                            } else if (button.classList.contains('queen') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('queen')
+                                piece.textContent = '♛'
+                                hidePromotionBlack()
+                            }
+                        })
+                    })
+                } else if (y2 === 8 && piece.classList.contains('pawn') === true && piece.classList.contains('white-piece') === true) {
+                    showPromotionWhite()
+                    piecePromotionButton.forEach(button => {
+                        button.addEventListener('click', () => {
+                            if (button.classList.contains('rook') && piece.classList.contains('pawn')) {
+                                console.log('whitepress')
+                                piece.classList.remove('pawn')
+                                piece.classList.add('rook')
+                                piece.textContent = '♜'
+                                hidePromotionWhite()
+                            } else if (button.classList.contains('knight') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('knight')
+                                piece.textContent = '♞'
+                                hidePromotionWhite()
+                            } else if (button.classList.contains('bishop') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('bishop')
+                                piece.textContent = '♝'
+                                hidePromotionWhite()
+                            } else if (button.classList.contains('queen') && piece.classList.contains('pawn')) {
+                                piece.classList.remove('pawn')
+                                piece.classList.add('queen')
+                                piece.textContent = '♛'
+                                hidePromotionWhite()
+                            }
+                        })
+                    })
+                }
             select = "";
         }
     }
@@ -277,3 +400,28 @@ tiles.forEach(item => item.addEventListener('click', function() {
     dropItem(item);
 }))
 
+// promotion feature
+
+const promotionPrompt = document.querySelector('.promotion-prompt-container')
+const promotionPromptBlack = document.querySelector('.promotion-prompt-black')
+const promotionPromptWhite = document.querySelector('.promotion-prompt-white')
+
+function showPromotionBlack() {
+    promotionPrompt.classList.remove('visibility-hidden')
+    promotionPromptBlack.classList.remove('display-none')
+}
+
+function hidePromotionBlack() {
+    promotionPrompt.classList.add('visibility-hidden')
+    promotionPromptBlack.classList.add('display-none')
+}
+
+function showPromotionWhite() {
+    promotionPrompt.classList.remove('visibility-hidden')
+    promotionPromptWhite.classList.remove('display-none')
+}
+
+function hidePromotionWhite() {
+    promotionPrompt.classList.add('visibility-hidden')
+    promotionPromptWhite.classList.add('display-none')
+}
