@@ -22,6 +22,11 @@ export default class Pieces {
               }`
             ).childElementCount !== 0
           ) {
+            this.path.push(
+              `${String.fromCharCode(96 + this.x1 + k * p_gridx[j])}${
+                this.y1 + k * p_gridy[j]
+              }`
+            );
             break;
           } else {
             this.path.push(

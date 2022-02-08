@@ -6,5 +6,4 @@ const board = document.querySelector(".container");
 const pieces = document.querySelectorAll(".piece");
 // Random player //
 
-let randomPlayer = Math.floor(Math.random() * 2);
-const chessInit = new Board(board, squares, pieces, randomPlayer);
+const chessInit = new Board(board, squares, pieces);

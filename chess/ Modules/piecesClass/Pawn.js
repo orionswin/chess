@@ -6,12 +6,16 @@ export default class Pawn extends Pieces {
     if (this.color === "black") {
       if (y2 - this.y1 === -2 && this.y1 === 7) {
         return x2 === this.x1 && y2 - this.y1 === -2;
+      } else if (Math.abs(x2 - this.x1) === 1) {
+        return y2 - this.y1 === -1;
       } else {
         return x2 === this.x1 && y2 - this.y1 === -1;
       }
     } else if (this.color === "white") {
       if (y2 - this.y1 === 2 && this.y1 === 2) {
         return x2 === this.x1 && y2 - this.y1 === 2;
+      } else if (Math.abs(x2 - this.x1) === 1) {
+        return y2 - this.y1 === 1;
       } else {
         return x2 === this.x1 && y2 - this.y1 === 1;
       }
